@@ -13,11 +13,13 @@ class IndiceModel
         $this->repository = new IndiceRepository;
     }
 
-    public function getIndice($indice)
+    public function getIndiceMeses($indice,$meses)
     {   
-        return $this->repository->getIndice($indice);
-        return ['teste' => $indice];
-        
+        return $this->repository->getIndiceMeses($indice,$meses);
     }
 
+    public function getIndicePeriodo($indice,$de,$ate)
+    {   
+        return $this->repository->getIndicePeriodo($indice,$de,$ate);
+    }
 }

@@ -14,11 +14,21 @@ class IndiceRepository
     const ID_IGPM_BCB = 189;
     const ID_IPCA_BCB = 433;
 
-    public function getIndice($indice)
+    public function getIndiceMeses($indice,$meses)
     {
-        $client = new Client();
-        $meses  = 12;
         $consulta = "/dados/ultimos/{$meses}";
+        return $this->getIndice($indice,$consulta);
+    }
+
+    public function getIndicePeriodo($indice,$de,$ate)
+    {
+        $consulta = "/dados?formato=json&dataInicial={$de}&dataFinal={$ate}";
+        return $this->getIndice($indice,$consulta);
+    }
+
+    private function getIndice($indice,$consulta)
+    {   
+        $client = new Client();
         try {
             $request = new Request(
                 'GET',
