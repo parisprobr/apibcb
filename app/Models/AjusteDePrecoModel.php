@@ -21,6 +21,7 @@ class AjusteDePrecoModel
     private function getTaxa($historicoIndice, $meses)
     {
         $taxaTotal = 0;
+
         foreach ($historicoIndice as $dataMes) {
             $taxaTotal += $dataMes->valor;
         }
@@ -28,8 +29,8 @@ class AjusteDePrecoModel
     }
 
     private function calculaPrecoComAjuste($preco, $taxa)
-    {
-        return $preco + ($preco * $taxa);
+    {   
+        return $preco + (($preco * $taxa) /100);
     }
 
     private function formatarPreco($preco)

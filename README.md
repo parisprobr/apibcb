@@ -119,13 +119,13 @@ Espera-se que a resposta seja fornecida no formato JSON, com a seguinte estrutur
 
 **Dado:** É possível calcular o valor de ajuste utilizando o índice IGPM em um determinado período de tempo
 **Quando:** Uma solicitação GET é feita para o endpoint `ajusteDePrecoPeriodo` com `Indice` definido como "IGPM", `Preco` definido como 200.0, `De` definido como "30/01/2022", e `Ate` definido como "30/01/2023"
-**Então:** A resposta deve ser fornecida no formato JSON, com a chave "data" contendo o valor do ajuste, que deve ser "245,33"
+**Então:** A resposta deve ser fornecida no formato JSON, com a chave "data" contendo o valor do ajuste, que deve ser "200,86"
 
 # Cenário 6: Cálculo de Ajuste de Preço - IPCA
 
 **Dado:** É possível calcular o valor de ajuste utilizando o índice IPCA em um determinado período de tempo
 **Quando:** Uma solicitação GET é feita para o endpoint `ajusteDePrecoPeriodo` com `Indice` definido como "IPCA", `Preco` definido como 150.0, `De` definido como "15/02/2022", e `Ate` definido como "15/02/2023"
-**Então:** A resposta deve ser fornecida no formato JSON, com a chave "data" contendo o valor do ajuste, que deve ser "180,00"
+**Então:** A resposta deve ser fornecida no formato JSON, com a chave "data" contendo o valor do ajuste, que deve ser "150,75"
 
 # Cenário 7: Cálculo de Ajuste de Preço - Período Inválido
 
@@ -133,8 +133,46 @@ Espera-se que a resposta seja fornecida no formato JSON, com a seguinte estrutur
 **Quando:** Uma solicitação GET é feita para o endpoint `ajusteDePrecoPeriodo` com `Indice` definido como "IGPM", `Preco` definido como 250.0, `De` definido como "30/01/2023", e `Ate` definido como "30/01/2022"
 **Então:** A resposta deve ser fornecida no formato JSON, com uma mensagem de erro indicando que o período é inválido
 
-# Cenário 8: Cálculo de Ajuste de Preço - Preço Negativo
+# Como executar os testes ?
 
-**Dado:** É possível calcular o valor de ajuste com um preço negativo
-**Quando:** Uma solicitação GET é feita para o endpoint `ajusteDePrecoPeriodo` com `Indice` definido como "IPCA", `Preco` definido como -50.0, `De` definido como "01/01/2022", e `Ate` definido como "01/01/2023"
-**Então:** A resposta deve ser fornecida no formato JSON, com uma mensagem de erro indicando que o preço é inválido
+Entre dentro do container da aplicação:
+```
+docker exec -it apibcb bash
+```
+
+Execute o phpunit:
+
+```
+vendor/bin/phpunit tests/Feature/ --testdox
+```
+
+O resultado esperado é:
+
+```
+Runtime:       PHP 8.2.1
+Configuration: /app/phpunit.xml
+
+.......                                                             7 / 7 (100%)
+
+Time: 00:02.627, Memory: 26.00 MB
+
+Calculo Ajuste De Preco Igpm (Tests\Feature\CalculoAjusteDePrecoIgpm)
+ ✔ Calculo de ajuste de preco igpm
+ ✔ Calculo de ajuste de preco igpm com data inicial maior que data final
+
+Calculo Ajuste De Preco Ipca (Tests\Feature\CalculoAjusteDePrecoIpca)
+ ✔ Calculo de ajuste de preco ipca
+
+Consulta Igpm (Tests\Feature\ConsultaIgpm)
+ ✔ Consulta valida de igpm
+ ✔ Consulta de igpm com meses negativo
+
+Consulta Indice (Tests\Feature\ConsultaIndice)
+ ✔ Consulta invalida de indice
+
+Consulta Ipca (Tests\Feature\ConsultaIpca)
+ ✔ Consulta valida de ipca
+
+OK (7 tests, 39 assertions)
+
+```
