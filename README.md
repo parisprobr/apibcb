@@ -1,4 +1,14 @@
-# apibcb
+# Integrantes:
+* Charles Muller
+* Tainá Schaeffer
+* Kevilin Rodrigues
+* Gonzalo Munoz
+* Rafael Trapp
+* Rodrigo Paris
+
+
+
+# Api Bcb
 Projeto para fim acadêmico, utiliza a API do banco central (https://dadosabertos.bcb.gov.br/dataset) para consulta de Indices e calculo de ajuste de preços
 
 <img src="DiagramaDeClasses.png">
