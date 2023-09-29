@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class AjusteDePrecoController extends Controller
 {
-    
+
     private $model;
     private $indiceModel;
 
@@ -17,7 +17,7 @@ class AjusteDePrecoController extends Controller
         $this->model = new AjusteDePrecoModel();
         $this->indiceModel = new IndiceModel();
     }
-    
+
     public function ajusteDePrecoPeriodo(Request $request)
     {
         $request->merge(
@@ -29,16 +29,18 @@ class AjusteDePrecoController extends Controller
             ]
         );
         $request->validate([
-            'indice' => ['required']
-            'preco'  => ['required']
-            'de'     => ['required']
-            'ate'    => ['required']
+            'indice' => ['required'],
+            'preco'  => ['required'],
+            'de'     => ['required'],
+            'ate'    => ['required'],
         ]);
-        dd($request->all());
-        die('aqui');
+        $indiceHistorico = $this->indiceModel->getIndicePeriodo(
+            $request->route('indice'),
+            $request->get('de'),
+            $request->get('ate')
+        );
         return response()->json(
-            ['data' => $this->model->ajusteDePrecoPeriodo($request->route('indice'))]
+            ['data' => $this->model->ajusteDePrecoPeriodo($indiceHistorico, $request->get('preco'))]
         );
     }
-
 }
