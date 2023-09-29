@@ -5,7 +5,7 @@ namespace App\Repository;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Exception\ClientException;
-
+use UnexpectedValueException;
 
 class IndiceRepository
 {
@@ -55,6 +55,8 @@ class IndiceRepository
             case 'ipca':
                 return self::ID_IPCA_BCB;
                 break;
+            default:
+                throw new UnexpectedValueException('Indice incorreto');
         }
     }
 }

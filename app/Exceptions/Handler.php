@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use UnexpectedValueException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -24,7 +25,15 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            //
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {   
+        
+        if(env('APP_DEBUG') && !strstr($_SERVER['SCRIPT_NAME'],'phpunit')){
+            dd($exception);
+        }
+        return response()->json(['Erro:' => $exception->getMessage()])->setStatusCode(500);
     }
 }

@@ -30,7 +30,9 @@ class IndiceController extends Controller
 
         $request->validate([
             'indice' => ['required'],
-            'meses'  => ['required']
+            'meses'  => ['required','numeric', 'gt:0']
+        ], [
+            'meses.gt' => 'O campo Meses deve ser um número positivo.',
         ]);
         $data = $this->model->getIndiceMeses(
             $request->route('indice'),
