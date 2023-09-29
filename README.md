@@ -1,6 +1,9 @@
 # apibcb
 Projeto para fim acadêmico, utiliza a API do banco central (https://dadosabertos.bcb.gov.br/dataset) para consulta de Indices e calculo de ajuste de preços
 
+<img src="storage/app/DiagramaDeClasses.png">
+
+
 ## Mapear no hosts:
 127.0.0.1 api.apibcb.local mysql.apibcb.local
 
