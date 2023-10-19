@@ -2,18 +2,6 @@ version: '2.4'
 
 services:
 
-    apibcb-nginx-proxy:
-        image: jwilder/nginx-proxy
-        container_name: apibcb-nginx-proxy
-        restart: on-failure
-        privileged: true
-        ports:
-            - 80:80
-            - 443:443
-        volumes:
-            - /var/run/docker.sock:/tmp/docker.sock:ro
-        mem_limit: 128M
-
     apibcb:
         container_name: apibcb
         environment:
@@ -33,7 +21,7 @@ services:
         hostname: api.apibcb.local
         depends_on:
             - apibcb-db
-            - apibcb-nginx-proxy
+            - pedraMoura-nginx-proxy
             - composer-apibcb
         command: bash -c 'chmod +x /root/scripts/start.sh; /root/scripts/start.sh'
         restart: always
@@ -79,3 +67,9 @@ services:
             VIRTUAL_HOST: mysql.apibcb.local
         depends_on:
             - apibcb-db
+    
+    apibcb-redis:
+        image: redis:latest
+        container_name: apibcb-redis
+        ports:
+            - "6379:6379"

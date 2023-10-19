@@ -6,6 +6,7 @@ use App\Models\AjusteDePrecoModel;
 use App\Models\IndiceModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AjusteDePrecoController extends Controller
 {
@@ -21,14 +22,13 @@ class AjusteDePrecoController extends Controller
 
     public function ajusteDePrecoPeriodo(Request $request)
     {
-        $request->merge(
-            [
-                'indice' => $request->route('indice'),
-                'preco'  => $request->route('preco'),
-                'de'     => $request->get('de'),
-                'ate'    => $request->get('ate')
-            ]
-        );
+        $request->merge([
+            'indice' => $request->route('indice'),
+            'preco'  => $request->route('preco'),
+            'de'     => $request->get('de'),
+            'ate'    => $request->get('ate')
+        ]);
+
         $request->validate([
             'indice' => ['required'],
             'preco'  => ['required'],
@@ -43,13 +43,19 @@ class AjusteDePrecoController extends Controller
             throw new \Exception('A data "de" não pode ser maior do que a data "ate".');
         }
 
-        $indiceHistorico = $this->indiceModel->getIndicePeriodo(
-            $request->route('indice'),
-            $request->get('de'),
-            $request->get('ate')
-        );
-        return response()->json(
-            ['data' => $this->model->ajusteDePrecoPeriodo($indiceHistorico, $request->get('preco'))]
-        );
+        $indice = $request->route('indice');
+        $preco = $request->route('preco');
+        $de = $request->get('de');
+        $ate = $request->get('ate');
+
+        // Chave única para esta combinação de parâmetros
+        $cacheKey = "ajuste_{$indice}_preco_{$preco}_periodo_{$de}_to_{$ate}";
+
+        $data = Cache::remember($cacheKey, 1, function() use ($indice, $de, $ate, $preco) {
+            $indiceHistorico = $this->indiceModel->getIndicePeriodo($indice, $de, $ate);
+            return $this->model->ajusteDePrecoPeriodo($indiceHistorico, $preco);
+        });
+
+        return response()->json(['data' => $data]);
     }
 }
