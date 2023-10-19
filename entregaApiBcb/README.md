@@ -10,7 +10,7 @@
 # Api Bcb
 Projeto para fim acadêmico, utiliza a API do banco central (https://dadosabertos.bcb.gov.br/dataset) para consulta de Indices e calculo de ajuste de preços
 
-<img src="DiagramaDeClasses.png">
+<img src="diagramaDeClasses-1.png">
 
 
 ## Mapear no hosts:
