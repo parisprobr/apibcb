@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\IndiceModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 class IndiceController extends Controller
 {
@@ -40,9 +41,11 @@ class IndiceController extends Controller
         // Chave única para este índice e meses
         $cacheKey = "indice_{$indice}_meses_{$meses}";
 
-        $data = Cache::remember($cacheKey, 1, function() use ($indice, $meses) {
+        $data = Cache::remember($cacheKey, 100, function() use ($indice, $meses) {
             return $this->model->getIndiceMeses($indice, $meses);
         });
+
+        dd($data);
 
         return response()->json(['data' => $data]);
     }
